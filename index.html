@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>市场稽核部&amp;物料/设备数据看板</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgb(251, 247, 239);
+    }
+  
+
+    @font-face {
+      font-family: "HuaKang Rounded W9";
+      src: url("assets/fonts/hk-yuan-w9.ttf") format("truetype");
+      font-style: normal;
+      font-weight: 900;
+      font-display: swap;
+    }
+
+    :root {
+      --royal-brown: #642c16;
+      --royal-brown-dark: #3f1b0f;
+      --royal-gold: #f6b91f;
+      --royal-amber: #df7a0b;
+      --cream: #fbf4e8;
+      --cream-card: rgba(255, 252, 244, 0.94);
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: "HuaKang Rounded W9", sans-serif !important;
+    }
+
+    html,
+    body {
+      min-width: 960px;
+      min-height: 640px;
+      overflow: hidden;
+    }
+
+    body {
+      position: relative;
+      isolation: isolate;
+      color: var(--royal-brown-dark);
+      background:
+        radial-gradient(circle at 50% 38%, rgba(255, 219, 116, 0.38) 0, rgba(255, 219, 116, 0) 28%),
+        radial-gradient(circle at 12% 88%, rgba(246, 185, 31, 0.18) 0, rgba(246, 185, 31, 0) 23%),
+        radial-gradient(circle at 90% 83%, rgba(217, 119, 6, 0.13) 0, rgba(217, 119, 6, 0) 24%),
+        linear-gradient(145deg, #fffaf1 0%, #f8edda 52%, #fff8ec 100%) !important;
+    }
+
+    body::before {
+      content: "";
+      position: absolute;
+      inset: 20px;
+      border: 2px solid rgba(100, 44, 22, 0.13);
+      border-radius: 30px;
+      box-shadow: inset 0 0 0 8px rgba(255, 255, 255, 0.32);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    body::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      bottom: -14vh;
+      width: 82vw;
+      height: 42vh;
+      transform: translateX(-50%);
+      border-radius: 50%;
+      background: radial-gradient(ellipse, rgba(246, 185, 31, 0.22), rgba(246, 185, 31, 0) 68%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .dashboard-logo {
+      position: absolute !important;
+      top: 4.2vh;
+      left: 50%;
+      width: clamp(350px, 25vw, 500px) !important;
+      height: auto !important;
+      margin: 0 !important;
+      transform: translateX(-50%) !important;
+      border-radius: 0 !important;
+      background: transparent !important;
+      filter: drop-shadow(0 7px 14px rgba(92, 45, 24, 0.12));
+      z-index: 5;
+    }
+
+    .dashboard-avatar {
+      position: absolute !important;
+      top: 14.3vh;
+      left: 50%;
+      width: clamp(122px, 8.3vw, 168px) !important;
+      height: auto !important;
+      aspect-ratio: 1;
+      margin: 0 !important;
+      transform: translateX(-50%) !important;
+      border: 7px solid rgba(255, 255, 255, 0.96);
+      border-radius: 50% !important;
+      background: #ffd93d;
+      box-shadow:
+        0 14px 32px rgba(100, 44, 22, 0.18),
+        0 0 0 4px rgba(246, 185, 31, 0.45);
+      z-index: 6;
+    }
+
+    .dashboard-title {
+      position: absolute !important;
+      top: 29.2vh;
+      left: 50%;
+      width: clamp(670px, 46vw, 880px) !important;
+      height: auto !important;
+      min-height: 72px;
+      margin: 0 !important;
+      padding: 12px 38px !important;
+      transform: translateX(-50%) !important;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fffaf1 !important;
+      font-size: clamp(28px, 2vw, 40px) !important;
+      line-height: 1.2 !important;
+      letter-spacing: 0.06em;
+      text-align: center;
+      white-space: nowrap;
+      background:
+        linear-gradient(135deg, rgba(126, 57, 26, 0.98), rgba(79, 30, 14, 0.98)) !important;
+      border: 1px solid rgba(255, 230, 164, 0.36);
+      border-radius: 22px;
+      box-shadow:
+        0 18px 38px rgba(77, 29, 13, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.22);
+      z-index: 5;
+    }
+
+    .entry-card {
+      position: absolute !important;
+      top: 43.2vh;
+      width: clamp(280px, 25vw, 460px) !important;
+      height: clamp(170px, 18vh, 202px) !important;
+      margin: 0 !important;
+      padding: 30px 34px 90px !important;
+      transform: translateX(-50%) !important;
+      color: var(--royal-amber) !important;
+      font-size: clamp(22px, 1.55vw, 30px) !important;
+      line-height: 1.1 !important;
+      letter-spacing: 0.08em;
+      text-align: center;
+      background:
+        linear-gradient(145deg, rgba(255, 255, 255, 0.98), var(--cream-card)) !important;
+      border: 2px solid rgba(246, 185, 31, 0.56);
+      border-radius: 30px !important;
+      box-shadow:
+        0 24px 46px rgba(86, 38, 18, 0.16),
+        inset 0 0 0 7px rgba(255, 237, 185, 0.34) !important;
+      cursor: pointer;
+      z-index: 4;
+      transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+    }
+
+    .entry-card-a {
+      left: 19%;
+    }
+
+    .entry-card-b {
+      left: 50%;
+    }
+
+    .entry-card-c {
+      left: 81%;
+    }
+
+    .entry-card:hover {
+      transform: translateX(-50%) translateY(-8px) !important;
+      border-color: rgba(223, 122, 11, 0.7);
+      box-shadow:
+        0 32px 58px rgba(86, 38, 18, 0.2),
+        inset 0 0 0 7px rgba(255, 237, 185, 0.48) !important;
+    }
+
+    .entry-card-copy {
+      position: absolute !important;
+      top: calc(43.2vh + 78px);
+      width: clamp(250px, 21vw, 400px) !important;
+      margin: 0 !important;
+      transform: translateX(-50%) !important;
+      color: var(--royal-brown-dark) !important;
+      font-size: clamp(24px, 1.7vw, 34px) !important;
+      line-height: 1.35 !important;
+      letter-spacing: 0.025em;
+      text-align: center;
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    .entry-card-copy-a {
+      left: 19%;
+    }
+
+    .entry-card-copy-b {
+      left: 50%;
+    }
+
+    .entry-card-copy-c {
+      left: 81%;
+    }
+
+    .entry-card-copy-inner {
+      font: inherit;
+    }
+
+    .tiger-left {
+      position: absolute !important;
+      left: clamp(-86px, -3.2vw, -30px);
+      bottom: 5.2vh;
+      width: clamp(360px, 26vw, 520px) !important;
+      height: auto !important;
+      margin: 0 !important;
+      transform: none !important;
+      border-radius: 0 !important;
+      filter: drop-shadow(0 28px 26px rgba(95, 49, 20, 0.17));
+      z-index: 2;
+    }
+
+    .tiger-right {
+      position: absolute !important;
+      right: clamp(12px, 4vw, 82px);
+      bottom: 5.5vh;
+      width: clamp(295px, 20.5vw, 410px) !important;
+      height: auto !important;
+      margin: 0 !important;
+      transform: none !important;
+      border-radius: 0 !important;
+      filter: drop-shadow(0 28px 26px rgba(95, 49, 20, 0.16));
+      z-index: 2;
+    }
+
+    .dashboard-divider {
+      position: absolute !important;
+      left: 50%;
+      bottom: 7.4vh;
+      width: min(78vw, 1500px) !important;
+      height: 3px !important;
+      margin: 0 !important;
+      transform: translateX(-50%) !important;
+      border: 0 !important;
+      border-radius: 999px;
+      background:
+        linear-gradient(90deg, transparent, rgba(100, 44, 22, 0.28) 20%, rgba(246, 185, 31, 0.86) 50%, rgba(100, 44, 22, 0.28) 80%, transparent) !important;
+      z-index: 1;
+    }
+
+    .dashboard-button {
+      position: absolute !important;
+      left: 50%;
+      bottom: 10.2vh;
+      width: auto !important;
+      height: auto !important;
+      min-width: 166px;
+      margin: 0 !important;
+      padding: 13px 30px !important;
+      transform: translateX(-50%) !important;
+      color: #fffdf8 !important;
+      font-size: 18px !important;
+      line-height: 1.2;
+      letter-spacing: 0.08em;
+      background: linear-gradient(135deg, #e78a0b, #ba540b) !important;
+      border: 1px solid rgba(255, 224, 139, 0.62) !important;
+      border-radius: 999px !important;
+      box-shadow: 0 12px 24px rgba(173, 74, 8, 0.24) !important;
+      z-index: 5;
+    }
+
+    .dashboard-button:hover {
+      filter: brightness(1.06);
+      transform: translateX(-50%) translateY(-3px) !important;
+    }
+
+    .dashboard-list {
+      position: absolute !important;
+      inset: auto !important;
+      width: 0 !important;
+      height: 0 !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      overflow: hidden;
+    }
+
+    @media (max-aspect-ratio: 4/3) {
+      .dashboard-title {
+        top: 28vh;
+      }
+
+      .entry-card {
+        top: 42vh;
+        width: 29vw !important;
+      }
+
+      .entry-card-copy {
+        top: calc(42vh + 76px);
+        width: 25vw !important;
+      }
+
+      .tiger-left {
+        opacity: 0.78;
+      }
+
+      .tiger-right {
+        opacity: 0.78;
+      }
+    }
+
+
+    /* Bottom workbench action */
+    .dashboard-divider {
+      bottom: 13.5vh !important;
+    }
+
+    .import-workbench-button {
+      position: absolute;
+      left: 50%;
+      bottom: 4.2vh;
+      min-width: 220px;
+      margin: 0;
+      padding: 14px 42px;
+      transform: translateX(-50%);
+      color: #fffaf1;
+      font-size: clamp(18px, 1.25vw, 23px);
+      line-height: 1.2;
+      letter-spacing: 0.1em;
+      cursor: pointer;
+      background: linear-gradient(135deg, #7e391a 0%, #4f1e0e 100%);
+      border: 1px solid rgba(255, 224, 139, 0.72);
+      border-radius: 999px;
+      box-shadow:
+        0 14px 28px rgba(77, 29, 13, 0.25),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+      z-index: 6;
+      transition: transform 180ms ease, box-shadow 180ms ease, filter 180ms ease;
+    }
+
+    .import-workbench-button:hover {
+      transform: translateX(-50%) translateY(-4px);
+      filter: brightness(1.08);
+      box-shadow:
+        0 19px 34px rgba(77, 29, 13, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.24);
+    }
+
+    .import-workbench-button:focus-visible {
+      outline: 4px solid rgba(246, 185, 31, 0.38);
+      outline-offset: 4px;
+    }
+</style>
+</head>
+<body>
+
+
+<p class="dashboard-title" style="font-size: 32px; line-height: 1.7; color: rgb(255, 255, 255); margin: 12px 0px; width: 783.625px; height: 57.1667px; transform: translate(618.123px, 180.277px); background-color: rgb(99, 44, 22); font-family: &quot;Microsoft YaHei&quot;, sans-serif; text-align: center;">市场稽核部&amp;物料/设备数据看板</p><p class="entry-card entry-card-a" style="font-size: 28px; line-height: 1.7; color: rgb(45, 43, 40); margin: 12px 0px; transform: translate(760px, 273.298px); width: 601.667px; height: 129.188px; background-color: rgb(255, 249, 196); box-shadow: rgba(0, 0, 0, 0.3) 0px 12px 40px; border-radius: 32px; text-align: center;" role="link" tabindex="0">点击跳转</p><div class="entry-card-copy entry-card-copy-a">市场稽核部数据看板</div><p></p><p class="entry-card entry-card-b" style="font-size: 28px; line-height: 1.7; color: rgb(45, 43, 40); margin: 12px 0px; transform: translate(760.45px, 293.54px); width: 601.667px; height: 129.188px; background-color: rgb(255, 249, 196); box-shadow: rgba(0, 0, 0, 0.3) 0px 12px 40px; border-radius: 32px; text-align: center;" role="link" tabindex="0">点击跳转</p><div class="entry-card-copy entry-card-copy-b"><div class="entry-card-copy-inner">物料数据分析看板</div></div><p></p><p class="entry-card entry-card-c" style="font-size: 28px; line-height: 1.7; color: rgb(45, 43, 40); margin: 12px 0px; width: 601.667px; height: 129.188px; background-color: rgb(255, 249, 196); box-shadow: rgba(0, 0, 0, 0.3) 0px 12px 40px; border-radius: 32px; text-align: center;" role="link" tabindex="0">点击跳转</p><div class="entry-card-copy entry-card-copy-c"><div class="entry-card-copy-inner">设备数据分析看板</div></div><p></p><img class="dashboard-avatar" src="assets/images/home-image-1-a470a14d6035.webp" alt="image3.png" style="max-width: 100%; height: 269px; margin: 8px 0px; display: block; border-radius: 8px; width: 269px; transform: translate(505px, 4.948px);"><img class="tiger-left" src="assets/images/home-image-2-07cb49092107.webp" alt="0313-老虎过渡版-右侧朝向.png" style="max-width: 100%; height: 525.417px; margin: 8px 0px; display: block; border-radius: 8px; transform: translate(-101.76px, -624.302px); width: 532.198px;"><img class="tiger-right" src="assets/images/home-image-3-19cd4e6b4b16.webp" alt="新点赞小虎-2603-合（CMYK).png" style="max-width: 100%; height: 608.625px; margin: 8px 0px; display: block; border-radius: 8px; width: 449.949px; transform: translate(1590.81px, -1127.85px);"><img class="dashboard-logo" src="assets/images/home-image-4-ed18104e56fd.webp" alt="image4.png" style="max-width: 100%; height: 60.1814px; margin: 8px 0px; display: block; border-radius: 4px; transform: translate(641.928px, -1752.54px); width: 408.12px; background-color: rgb(255, 255, 255);"><hr class="dashboard-divider" style="border-width: medium; border-style: none; border-color: currentcolor; border-image: none; height: 43px; background: linear-gradient(to right, transparent, rgb(212, 207, 199), transparent) rgb(99, 44, 22); margin: 28px 0px; transform: translate(-5.6667px, -1961.79px); width: 1911.67px;"><button type="button" class="import-workbench-button">导入工作台</button><ul class="dashboard-list" style="margin: 12px 0px; padding-left: 24px; line-height: 1.8; font-size: 16px;"></ul><script>
+  (() => {
+    const links = {
+      "entry-card-a": "https://dash.weishenghjxh.xyz/",
+      "entry-card-b": "https://dash.weishenghjxh.xyz/material-main-dashboard/",
+      "entry-card-c": "https://dash.weishenghjxh.xyz/device-main-dashboard/"
+};
+    Object.entries(links).forEach(([id, href]) => {
+      const card = document.querySelector("." + id);
+      const label = document.querySelector(".entry-card-copy-" + id.slice(-1));
+      if (!card) return;
+      const go = () => { window.location.href = href; };
+      card.addEventListener("click", go);
+      card.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          go();
+        }
+      });
+      if (label) {
+        label.setAttribute("role", "link");
+        label.setAttribute("tabindex", "0");
+        label.addEventListener("click", go);
+        label.addEventListener("keydown", (event) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            go();
+          }
+        });
+      }
+    });
+  })();
+</script></body></html>

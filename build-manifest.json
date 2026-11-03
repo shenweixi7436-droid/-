@@ -1,0 +1,50 @@
+{
+  "name": "市场稽核部&物料/设备数据看板首页",
+  "version": "e74e6ec25fc9",
+  "builtAt": "2026-11-03T11:15:26+08:00",
+  "source": "C:\\Users\\shenw\\Desktop\\看板\\看板首页.html",
+  "customDomain": "weishenghjxh.xyz",
+  "links": {
+    "entry-card-a": "https://dash.weishenghjxh.xyz/",
+    "entry-card-b": "https://dash.weishenghjxh.xyz/material-main-dashboard/",
+    "entry-card-c": "https://dash.weishenghjxh.xyz/device-main-dashboard/"
+  },
+  "images": [
+    {
+      "file": "assets/images/home-image-1-a470a14d6035.webp",
+      "width": 574,
+      "height": 574,
+      "publishedWidth": 574,
+      "publishedHeight": 574,
+      "sourceBytes": 183253,
+      "publishedBytes": 26918
+    },
+    {
+      "file": "assets/images/home-image-2-07cb49092107.webp",
+      "width": 7442,
+      "height": 7833,
+      "publishedWidth": 1520,
+      "publishedHeight": 1600,
+      "sourceBytes": 38826359,
+      "publishedBytes": 159098
+    },
+    {
+      "file": "assets/images/home-image-3-19cd4e6b4b16.webp",
+      "width": 7399,
+      "height": 10630,
+      "publishedWidth": 1114,
+      "publishedHeight": 1600,
+      "sourceBytes": 37024893,
+      "publishedBytes": 90840
+    },
+    {
+      "file": "assets/images/home-image-4-ed18104e56fd.webp",
+      "width": 3228,
+      "height": 476,
+      "publishedWidth": 1600,
+      "publishedHeight": 236,
+      "sourceBytes": 88339,
+      "publishedBytes": 61446
+    }
+  ]
+}
